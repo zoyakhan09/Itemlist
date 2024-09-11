@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import './App.css'; // Import your custom CSS file
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+function ItemList() {
+    const [items, setItems] = useState([]);
+
+    useEffect(() => {
+        fetch('https://jsonplaceholder.typicode.com/posts')
+            .then(response => response.json())
+            .then(data => setItems(data))
+            .catch(error => console.error('Error fetching data:', error));
+    }, []);
+
+    return (
+        <div>
+            <h1 className="title">Items List</h1>
+            <ul className="item-list">
+                {items.map(item => (
+                    <li key={item.id} className="item">
+                        {item.title}
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
 }
 
-export default App;
+export default ItemList;
